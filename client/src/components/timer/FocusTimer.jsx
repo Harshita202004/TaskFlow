@@ -1,145 +1,173 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FiPlay, FiPause, FiRotateCcw } from "react-icons/fi";
-
-const TOTAL_TIME = 25 * 60;
+import {
+  FiPlay,
+  FiPause,
+  FiRotateCcw,
+  FiClock,
+} from "react-icons/fi";
 
 const FocusTimer = () => {
-  const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
-  const [isRunning, setIsRunning] = useState(false);
+  const [seconds, setSeconds] = useState(() => {
+    const saved = localStorage.getItem("focus-seconds");
+    return saved ? Number(saved) : 0;
+  });
+
+  const [running, setRunning] = useState(false);
 
   useEffect(() => {
-  if (!isRunning) return;
+    localStorage.setItem("focus-seconds", seconds);
+  }, [seconds]);
 
-  const timer = setInterval(() => {
-    setTimeLeft((prev) => {
-      if (prev <= 1) {
-        clearInterval(timer);
+  useEffect(() => {
+    if (!running) return;
 
-        setTimeout(() => {
-          alert("🎉 Focus Session Completed!");
-        }, 0);
+    const interval = setInterval(() => {
+      setSeconds((prev) => prev + 1);
+    }, 1000);
 
-        return 0;
-      }
+    return () => clearInterval(interval);
 
-      return prev - 1;
-    });
-  }, 1000);
+  }, [running]);
 
-  return () => clearInterval(timer);
-}, [isRunning]);
+  const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
 
-  const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
-  const seconds = String(timeLeft % 60).padStart(2, "0");
+  const mins = String(
+    Math.floor((seconds % 3600) / 60)
+  ).padStart(2, "0");
 
-  const progress = (timeLeft / TOTAL_TIME) * 100;
+  const secs = String(seconds % 60).padStart(2, "0");
+
+  const progress = seconds % 3600;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl shadow-md p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="bg-white rounded-3xl border border-orange-100 shadow-sm p-6"
     >
-      <h2 className="text-xl font-bold text-gray-800 mb-6">
-        Focus Timer
-      </h2>
 
-      <div className="flex flex-col items-center">
+      <div className="flex items-center justify-between">
 
-        <div className="relative w-48 h-48">
+        <h2 className="text-2xl font-bold text-gray-800">
+          Focus Tracker
+        </h2>
+
+        <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+
+          <FiClock className="text-orange-500 text-xl" />
+
+        </div>
+
+      </div>
+
+      <div className="flex justify-center mt-8">
+
+        <div className="relative w-56 h-56">
 
           <svg
             className="absolute inset-0"
-            width="192"
-            height="192"
+            width="224"
+            height="224"
           >
+
             <circle
-              cx="96"
-              cy="96"
-              r="80"
-              stroke="#FED7AA"
+              cx="112"
+              cy="112"
+              r="94"
+              stroke="#FFE7D6"
               strokeWidth="12"
               fill="none"
             />
 
             <circle
-              cx="96"
-              cy="96"
-              r="80"
+              cx="112"
+              cy="112"
+              r="94"
               stroke="#F97316"
               strokeWidth="12"
               fill="none"
               strokeLinecap="round"
-              strokeDasharray={503}
-              strokeDashoffset={503 - (503 * progress) / 100}
-              transform="rotate(-90 96 96)"
+              strokeDasharray={590}
+              strokeDashoffset={
+                590 - (590 * progress) / 3600
+              }
+              transform="rotate(-90 112 112)"
             />
+
           </svg>
 
           <div className="absolute inset-0 flex items-center justify-center">
 
             <div className="text-center">
+
               <h1 className="text-5xl font-bold text-gray-800">
-                {minutes}:{seconds}
+
+                {hrs}:{mins}:{secs}
+
               </h1>
 
-              <p className="text-gray-500 mt-2">
-                Pomodoro
-              </p>
             </div>
 
           </div>
 
         </div>
 
-        <div className="flex gap-4 mt-8">
+      </div>
+            <div className="mt-10 flex flex-wrap justify-center gap-4">
 
-          <button
-            onClick={() => {
-            if (timeLeft > 0) {
-                    setIsRunning(true);
-                    }
-                }}
-            className="bg-orange-500 hover:bg-orange-600 text-white p-4 rounded-xl transition"
-          >
-            <FiPlay size={20} />
-          </button>
+        <button
+          onClick={() => setRunning(true)}
+          className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl transition w-full sm:w-auto"
+        >
+          <FiPlay />
+          Start
+        </button>
 
-          <button
-            onClick={() => setIsRunning(false)}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white p-4 rounded-xl transition"
-          >
-            <FiPause size={20} />
-          </button>
+        <button
+          onClick={() => setRunning(false)}
+          className="flex items-center justify-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-xl transition w-full sm:w-auto"
+        >
+          <FiPause />
+          Pause
+        </button>
 
-          <button
-            onClick={() => {
-              setTimeLeft(TOTAL_TIME);
-              setIsRunning(false);
-            }}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 p-4 rounded-xl transition"
-          >
-            <FiRotateCcw size={20} />
-          </button>
+        <button
+          onClick={() => {
+            setRunning(false);
+            setSeconds(0);
+            localStorage.removeItem("focus-seconds");
+          }}
+          className="flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-xl transition w-full sm:w-auto"
+        >
+          <FiRotateCcw />
+          Reset
+        </button>
 
-        </div>
+      </div>
 
-        <div className="mt-8 bg-orange-50 rounded-xl p-4 w-full">
+      <div className="mt-8 bg-orange-50 border border-orange-100 rounded-2xl p-5">
 
-          <h3 className="font-semibold text-gray-800">
-            Today's Focus
-          </h3>
+        <h3 className="text-lg font-semibold text-gray-800">
+          Today's Focus Time
+        </h3>
 
-          <p className="text-gray-500 mt-1">
-            3 Sessions Completed
-          </p>
+        <div className="mt-3 flex items-center justify-between">
+
+          <span className="text-gray-500">
+            Time Focused
+          </span>
+
+          <span className="text-2xl font-bold text-orange-500">
+            {hrs}h {mins}m
+          </span>
 
         </div>
 
       </div>
+
     </motion.div>
   );
 };
 
-export default FocusTimer;
+export default FocusTimer; 

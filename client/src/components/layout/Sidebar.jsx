@@ -4,7 +4,6 @@ import {
   FiHome,
   FiCheckSquare,
   FiCalendar,
-  FiUsers,
   FiBarChart2,
   FiSettings,
   FiLogOut,
@@ -14,7 +13,6 @@ const menuItems = [
   { name: "Dashboard", path: "/dashboard", icon: <FiHome size={20} /> },
   { name: "Tasks", path: "/tasks", icon: <FiCheckSquare size={20} /> },
   { name: "Calendar", path: "/calendar", icon: <FiCalendar size={20} /> },
-  { name: "Team", path: "/team", icon: <FiUsers size={20} /> },
   { name: "Analytics", path: "/analytics", icon: <FiBarChart2 size={20} /> },
   { name: "Settings", path: "/settings", icon: <FiSettings size={20} /> },
 ];

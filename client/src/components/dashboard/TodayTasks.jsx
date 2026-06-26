@@ -1,102 +1,73 @@
 import { motion } from "framer-motion";
-import {
-  FiCheckCircle,
-  FiClock,
-  FiFlag,
-} from "react-icons/fi";
-
-const tasks = [
-  {
-    id: 1,
-    title: "Design Dashboard UI",
-    priority: "High",
-    status: "In Progress",
-    color: "bg-red-100 text-red-600",
-  },
-  {
-    id: 2,
-    title: "Build Login API",
-    priority: "Medium",
-    status: "Pending",
-    color: "bg-yellow-100 text-yellow-600",
-  },
-  {
-    id: 3,
-    title: "Complete Sidebar",
-    priority: "Low",
-    status: "Completed",
-    color: "bg-green-100 text-green-600",
-  },
-  {
-    id: 4,
-    title: "Connect MySQL Database",
-    priority: "High",
-    status: "Pending",
-    color: "bg-red-100 text-red-600",
-  },
-];
+import { FiClipboard, FiPlus } from "react-icons/fi";
 
 const TodayTasks = () => {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
+      initial={{ opacity: 0, x: -15 }}
       animate={{ opacity: 1, x: 0 }}
-      className="bg-white rounded-2xl shadow-md p-6"
+      className="bg-white rounded-3xl border border-orange-100 shadow-sm p-6 h-full"
     >
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-gray-800">
-          Today's Tasks
-        </h2>
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
-        <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-semibold">
-          {tasks.length} Tasks
-        </span>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">
+            Today's Tasks
+          </h2>
+
+          <p className="text-gray-500 mt-1">
+            Your daily task list will appear here.
+          </p>
+        </div>
+
+        <button
+          className="flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white px-5 py-3 rounded-xl transition w-full sm:w-auto"
+        >
+          <FiPlus />
+          Create Task
+        </button>
+
       </div>
 
-      <div className="space-y-4">
-        {tasks.map((task) => (
-          <motion.div
-            key={task.id}
-            whileHover={{ scale: 1.02 }}
-            className="border border-gray-100 rounded-xl p-4 hover:shadow-md transition"
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <h3 className="font-semibold text-gray-800">
-                  {task.title}
-                </h3>
+      {/* Empty State */}
 
-                <div className="flex gap-4 mt-2 text-sm text-gray-500">
+      <div className="flex flex-col items-center justify-center text-center py-16">
 
-                  <div className="flex items-center gap-1">
-                    <FiFlag />
-                    {task.priority}
-                  </div>
+        <div className="w-24 h-24 rounded-full bg-orange-100 flex items-center justify-center mb-6">
 
-                  <div className="flex items-center gap-1">
-                    <FiClock />
-                    Today
-                  </div>
+          <FiClipboard
+            size={42}
+            className="text-orange-500"
+          />
 
-                </div>
-              </div>
+        </div>
 
-              <span
-                className={`px-3 py-1 rounded-full text-sm font-semibold ${task.color}`}
-              >
-                {task.status}
-              </span>
-            </div>
+        <h3 className="text-2xl font-bold text-gray-800">
+          No Tasks Yet
+        </h3>
 
-            {task.status === "Completed" && (
-              <div className="flex items-center gap-2 text-green-600 mt-3">
-                <FiCheckCircle />
-                Completed Successfully
-              </div>
-            )}
-          </motion.div>
-        ))}
+        <p className="text-gray-500 mt-3 max-w-sm">
+
+          You haven't created any tasks yet.
+
+          <br />
+
+          Click the button above to create your first task.
+
+        </p>
+
+        <button
+          className="mt-8 bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl transition flex items-center gap-2"
+        >
+          <FiPlus />
+
+          Create Your First Task
+
+        </button>
+
       </div>
+
     </motion.div>
   );
 };
