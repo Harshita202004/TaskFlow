@@ -1,90 +1,57 @@
 import { motion } from "framer-motion";
-import {
-  FiCheckCircle,
-  FiPlusCircle,
-  FiClock,
-  FiEdit,
-} from "react-icons/fi";
+import { FiCheckCircle, FiClock, FiEdit } from "react-icons/fi";
 
-const activities = [
-  {
-    id: 1,
-    icon: <FiPlusCircle />,
-    title: "Created a new task",
-    description: "Finish TaskFlow Dashboard",
-    time: "5 min ago",
-    color: "bg-blue-100 text-blue-600",
-  },
-  {
-    id: 2,
-    icon: <FiEdit />,
-    title: "Updated task",
-    description: "Login page improvements",
-    time: "25 min ago",
-    color: "bg-orange-100 text-orange-600",
-  },
-  {
-    id: 3,
-    icon: <FiCheckCircle />,
-    title: "Completed task",
-    description: "Register Page",
-    time: "1 hour ago",
-    color: "bg-green-100 text-green-600",
-  },
-  {
-    id: 4,
-    icon: <FiClock />,
-    title: "Deadline Reminder",
-    description: "Backend API due tomorrow",
-    time: "2 hours ago",
-    color: "bg-red-100 text-red-600",
-  },
-];
+const timeAgo = (value) => {
+  const diff = Date.now() - new Date(value).getTime();
+  const minutes = Math.max(Math.floor(diff / 60000), 0);
+  if (minutes < 1) return "Just now";
+  if (minutes < 60) return `${minutes} min ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hr ago`;
+  return `${Math.floor(hours / 24)} day ago`;
+};
 
-const RecentActivity = () => {
+const RecentActivity = ({ tasks }) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       className="bg-white rounded-2xl shadow-md p-6"
     >
-      <h2 className="text-xl font-bold text-gray-800 mb-6">
-        Recent Activity
-      </h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-6">Recent Activity</h2>
 
-      <div className="space-y-5">
-        {activities.map((activity) => (
-          <motion.div
-            key={activity.id}
-            whileHover={{ x: 5 }}
-            className="flex gap-4"
-          >
-            <div
-              className={`w-12 h-12 rounded-xl flex items-center justify-center ${activity.color}`}
-            >
-              {activity.icon}
-            </div>
+      {tasks.length === 0 ? (
+        <p className="text-gray-500">Task updates will appear here.</p>
+      ) : (
+        <div className="space-y-5">
+          {tasks.map((task) => {
+            const completed = task.status === "Completed";
+            const Icon = completed ? FiCheckCircle : task.status === "In Progress" ? FiClock : FiEdit;
 
-            <div className="flex-1 border-b border-gray-100 pb-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="font-semibold text-gray-800">
-                    {activity.title}
-                  </h3>
-
-                  <p className="text-gray-500 text-sm mt-1">
-                    {activity.description}
-                  </p>
+            return (
+              <motion.div key={task._id} whileHover={{ x: 5 }} className="flex gap-4">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-orange-100 text-orange-600">
+                  <Icon />
                 </div>
 
-                <span className="text-xs text-gray-400">
-                  {activity.time}
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+                <div className="flex-1 border-b border-gray-100 pb-4">
+                  <div className="flex justify-between items-start gap-4">
+                    <div>
+                      <h3 className="font-semibold text-gray-800">
+                        {completed ? "Completed task" : "Updated task"}
+                      </h3>
+                      <p className="text-gray-500 text-sm mt-1">{task.title}</p>
+                    </div>
+                    <span className="text-xs text-gray-400 whitespace-nowrap">
+                      {timeAgo(task.updatedAt || task.createdAt)}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
     </motion.div>
   );
 };

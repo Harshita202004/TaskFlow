@@ -8,16 +8,9 @@ import {
 } from "react-icons/fi";
 
 const FocusTimer = () => {
-  const [seconds, setSeconds] = useState(() => {
-    const saved = localStorage.getItem("focus-seconds");
-    return saved ? Number(saved) : 0;
-  });
+  const [seconds, setSeconds] = useState(0);
 
   const [running, setRunning] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem("focus-seconds", seconds);
-  }, [seconds]);
 
   useEffect(() => {
     if (!running) return;
@@ -136,7 +129,6 @@ const FocusTimer = () => {
           onClick={() => {
             setRunning(false);
             setSeconds(0);
-            localStorage.removeItem("focus-seconds");
           }}
           className="flex items-center justify-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-xl transition w-full sm:w-auto"
         >

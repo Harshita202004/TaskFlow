@@ -1,79 +1,104 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import toast from "react-hot-toast";
 import {
+  FiCalendar,
+  FiCheckCircle,
+  FiEdit2,
+  FiFlag,
   FiPlus,
   FiSearch,
-  FiCalendar,
-  FiFlag,
-  FiCheckCircle,
   FiTrash2,
-  FiEdit2,
 } from "react-icons/fi";
-
+import { getErrorMessage } from "../api/http";
+import { taskApi } from "../api/taskApi";
 import TaskForm from "../components/task/TaskForm";
+import { formatDate } from "../utils/taskMetrics";
 
 const Tasks = () => {
   const [openForm, setOpenForm] = useState(false);
-
   const [search, setSearch] = useState("");
-
   const [statusFilter, setStatusFilter] = useState("All");
-
   const [priorityFilter, setPriorityFilter] = useState("All");
   const [editingTask, setEditingTask] = useState(null);
-const [editingIndex, setEditingIndex] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
-  const [tasks, setTasks] = useState(() => {
-    const saved = localStorage.getItem("taskflow-tasks");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const loadTasks = useCallback(
+    async (page = 1) => {
+      setLoading(true);
+      try {
+        const { data } = await taskApi.list({
+          page,
+          limit: 8,
+          search: search || undefined,
+          status: statusFilter,
+          priority: priorityFilter,
+        });
+        setTasks(data.tasks);
+        setPagination(data.pagination);
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [priorityFilter, search, statusFilter]
+  );
 
   useEffect(() => {
-    localStorage.setItem(
-      "taskflow-tasks",
-      JSON.stringify(tasks)
-    );
-  }, [tasks]);
+    const timeout = setTimeout(() => loadTasks(1), 250);
+    return () => clearTimeout(timeout);
+  }, [loadTasks]);
 
- const saveTask = (task) => {
-  if (editingTask !== null) {
-    const updated = [...tasks];
-    updated[editingIndex] = task;
-    setTasks(updated);
-
-    setEditingTask(null);
-    setEditingIndex(null);
-  } else {
-    setTasks((prev) => [...prev, task]);
-  }
-
-  setOpenForm(false);
-};
-
-  const deleteTask = (index) => {
-    const updated = [...tasks];
-    updated.splice(index, 1);
-    setTasks(updated);
+  const broadcastChange = () => {
+    window.dispatchEvent(new Event("taskflow:tasks-changed"));
   };
 
-  const filteredTasks = tasks.filter((task) => {
-    const matchesSearch =
-      task.title.toLowerCase().includes(search.toLowerCase());
+  const saveTask = async (task) => {
+    setSaving(true);
+    try {
+      if (editingTask) {
+        await taskApi.update(editingTask._id, task);
+        toast.success("Task updated");
+      } else {
+        await taskApi.create(task);
+        toast.success("Task created");
+      }
+      setOpenForm(false);
+      setEditingTask(null);
+      await loadTasks(pagination.page);
+      broadcastChange();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    } finally {
+      setSaving(false);
+    }
+  };
 
-    const matchesStatus =
-      statusFilter === "All" ||
-      task.status === statusFilter;
+  const deleteTask = async (task) => {
+    try {
+      await taskApi.remove(task._id);
+      toast.success("Task deleted");
+      await loadTasks(pagination.page);
+      broadcastChange();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
 
-    const matchesPriority =
-      priorityFilter === "All" ||
-      task.priority === priorityFilter;
-
-    return (
-      matchesSearch &&
-      matchesStatus &&
-      matchesPriority
-    );
-  });
+  const toggleComplete = async (task) => {
+    try {
+      await taskApi.complete(task._id, task.status !== "Completed");
+      toast.success(task.status === "Completed" ? "Task reopened" : "Task completed");
+      await loadTasks(pagination.page);
+      broadcastChange();
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
+  };
 
   return (
     <motion.div
@@ -81,73 +106,45 @@ const [editingIndex, setEditingIndex] = useState(null);
       animate={{ opacity: 1 }}
       className="max-w-7xl mx-auto space-y-8"
     >
+      <TaskForm
+        open={openForm}
+        onClose={() => {
+          setOpenForm(false);
+          setEditingTask(null);
+        }}
+        onSave={saveTask}
+        editingTask={editingTask}
+        saving={saving}
+      />
 
-     <TaskForm
-  open={openForm}
-  onClose={() => {
-    setOpenForm(false);
-    setEditingTask(null);
-    setEditingIndex(null);
-  }}
-  onSave={saveTask}
-  editingTask={editingTask}
-/>
-
-      {/* Header */}
-
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
-
-        <div>
-
-          <h1 className="text-3xl font-bold text-gray-800">
-            Tasks
-          </h1>
-
-          <p className="text-gray-500 mt-1">
-            Organize and manage your daily work.
-          </p>
-
-        </div>
-
-        {tasks.length > 0 && (
-          <button
-            onClick={() => setOpenForm(true)}
-            className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl flex items-center gap-2"
-          >
-            <FiPlus />
-            Create Task
-          </button>
-        )}
-
+      <div className="flex justify-end">
+        <button
+          onClick={() => setOpenForm(true)}
+          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 justify-center"
+        >
+          <FiPlus />
+          Create Task
+        </button>
       </div>
 
-      {/* Search & Filters */}
-
       <div className="bg-white rounded-3xl border border-orange-100 shadow-sm p-6">
-
         <div className="grid lg:grid-cols-3 gap-5">
-
           <div className="relative">
-
             <FiSearch className="absolute left-4 top-4 text-gray-400" />
-
             <input
               type="text"
               placeholder="Search tasks..."
               value={search}
-              onChange={(e) =>
-                setSearch(e.target.value)
-              }
+              onChange={(event) => setSearch(event.target.value)}
               className="w-full pl-11 pr-4 py-3 rounded-xl border border-orange-100 outline-none focus:ring-2 focus:ring-orange-400"
             />
-
           </div>
 
+
+          
           <select
             value={statusFilter}
-            onChange={(e) =>
-              setStatusFilter(e.target.value)
-            }
+            onChange={(event) => setStatusFilter(event.target.value)}
             className="border border-orange-100 rounded-xl px-4 py-3"
           >
             <option>All</option>
@@ -158,9 +155,7 @@ const [editingIndex, setEditingIndex] = useState(null);
 
           <select
             value={priorityFilter}
-            onChange={(e) =>
-              setPriorityFilter(e.target.value)
-            }
+            onChange={(event) => setPriorityFilter(event.target.value)}
             className="border border-orange-100 rounded-xl px-4 py-3"
           >
             <option>All</option>
@@ -168,78 +163,42 @@ const [editingIndex, setEditingIndex] = useState(null);
             <option>Medium</option>
             <option>Low</option>
           </select>
-
         </div>
-
       </div>
 
-      {/* Empty State / Task List */}
-            {tasks.length === 0 ? (
-
-        <div className="bg-white rounded-3xl border border-orange-100 shadow-sm">
-
-          <div className="flex flex-col items-center justify-center text-center py-24 px-6">
-
-            <div className="w-24 h-24 rounded-full bg-orange-100 flex items-center justify-center">
-
-              <FiCheckCircle
-                size={45}
-                className="text-orange-500"
-              />
-
-            </div>
-
-            <h2 className="text-3xl font-bold text-gray-800 mt-8">
-              No Tasks Yet
-            </h2>
-
-            <p className="text-gray-500 mt-3 max-w-md">
-              Create your first task and start organizing your work like a pro.
-            </p>
-
-            <button
-              onClick={() => setOpenForm(true)}
-              className="mt-8 bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-xl flex items-center gap-2 transition"
-            >
-
-              <FiPlus />
-
-              Create First Task
-
-            </button>
-
-          </div>
-
+      {loading ? (
+        <div className="bg-white rounded-3xl border border-orange-100 shadow-sm p-10 text-center text-gray-500">
+          Loading tasks...
         </div>
-
+      ) : tasks.length === 0 ? (
+        <div className="bg-white rounded-3xl border border-orange-100 shadow-sm">
+          <div className="flex flex-col items-center justify-center text-center py-24 px-6">
+            <div className="w-24 h-24 rounded-full bg-orange-100 flex items-center justify-center">
+              <FiCheckCircle size={45} className="text-orange-500" />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-800 mt-8">No Tasks Found</h2>
+            <p className="text-gray-500 mt-3 max-w-md">
+              Create a task or adjust your filters to see your work list.
+            </p>
+          </div>
+        </div>
       ) : (
-
         <div className="grid gap-5">
-
-          {filteredTasks.map((task, index) => (
-
+          {tasks.map((task) => (
             <motion.div
-              key={index}
+              key={task._id}
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ y: -2 }}
               className="bg-white rounded-3xl border border-orange-100 shadow-sm hover:shadow-lg transition-all p-6"
             >
-
               <div className="flex flex-col lg:flex-row lg:justify-between gap-6">
-
                 <div className="flex-1">
-
                   <div className="flex flex-wrap items-center gap-3">
-
-                    <h2 className="text-xl font-bold text-gray-800">
-                      {task.title}
-                    </h2>
-
+                    <h2 className="text-xl font-bold text-gray-800">{task.title}</h2>
                     <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-semibold">
                       {task.priority}
                     </span>
-
                   </div>
 
                   <p className="mt-4 text-gray-500 leading-7">
@@ -247,98 +206,74 @@ const [editingIndex, setEditingIndex] = useState(null);
                   </p>
 
                   <div className="flex flex-wrap gap-6 mt-6 text-sm text-gray-500">
-
                     <div className="flex items-center gap-2">
-
                       <FiCalendar />
-
-                      {task.dueDate || "No Due Date"}
-
+                      {formatDate(task.dueDate)}
                     </div>
-
                     <div className="flex items-center gap-2">
-
                       <FiFlag />
-
                       {task.category}
-
                     </div>
-
                     <div className="flex items-center gap-2 text-green-600">
-
                       <FiCheckCircle />
-
                       {task.status}
-
                     </div>
-
                   </div>
-
                 </div>
 
                 <div className="flex flex-wrap gap-3 h-fit">
-
                   <button
-                     onClick={() => {
-                    setEditingTask(task);
-                         setEditingIndex(index);
-                                     setOpenForm(true);
-                                 }}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-xl flex items-center gap-2 transition"
-                    >
-                 <FiEdit2 />
-                     Edit
-                            </button>
-
+                    onClick={() => toggleComplete(task)}
+                    className="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl flex items-center gap-2 transition"
+                  >
+                    <FiCheckCircle />
+                    {task.status === "Completed" ? "Reopen" : "Complete"}
+                  </button>
                   <button
-                    onClick={() => deleteTask(index)}
+                    onClick={() => {
+                      setEditingTask(task);
+                      setOpenForm(true);
+                    }}
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-xl flex items-center gap-2 transition"
+                  >
+                    <FiEdit2 />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deleteTask(task)}
                     className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-xl flex items-center gap-2 transition"
                   >
-
                     <FiTrash2 />
-
                     Delete
-
                   </button>
-
                 </div>
-
               </div>
-
             </motion.div>
-
           ))}
-
         </div>
-
-      )}
-            {/* No Results after Search */}
-
-      {tasks.length > 0 && filteredTasks.length === 0 && (
-
-        <div className="bg-white rounded-3xl border border-orange-100 shadow-sm py-20">
-
-          <div className="text-center">
-
-            <FiSearch
-              size={45}
-              className="mx-auto text-orange-400"
-            />
-
-            <h2 className="text-2xl font-bold mt-6 text-gray-800">
-              No Matching Tasks
-            </h2>
-
-            <p className="text-gray-500 mt-2">
-              Try changing your search or filters.
-            </p>
-
-          </div>
-
-        </div>
-
       )}
 
+      {pagination.pages > 1 && (
+        <div className="flex items-center justify-center gap-3">
+          <button
+            onClick={() => loadTasks(pagination.page - 1)}
+            disabled={pagination.page === 1}
+            className="px-4 py-2 rounded-xl bg-white border border-orange-100 disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-gray-600">
+            Page {pagination.page} of {pagination.pages}
+          </span>
+          <button
+            onClick={() => loadTasks(pagination.page + 1)}
+            disabled={pagination.page === pagination.pages}
+            className="px-4 py-2 rounded-xl bg-white border border-orange-100 disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </motion.div>
   );
 };

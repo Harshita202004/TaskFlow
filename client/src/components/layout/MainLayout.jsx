@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 
 const MainLayout = () => {
   return (
-    <div className="flex h-screen bg-orange-50">
+    <div className="flex min-h-screen bg-orange-50">
 
       <Sidebar />
 
@@ -12,7 +12,7 @@ const MainLayout = () => {
 
         <Navbar />
 
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-4 lg:p-8">
           <Outlet />
         </main>
 
