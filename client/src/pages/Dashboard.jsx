@@ -26,6 +26,9 @@ const emptyMetrics = {
   weeklyProductivity: [],
 };
 
+const cardStyle =
+  "bg-white/90 backdrop-blur-sm rounded-3xl border border-orange-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 h-full";
+
 const Dashboard = () => {
   const [metrics, setMetrics] = useState(emptyMetrics);
   const [calendarTasks, setCalendarTasks] = useState([]);
@@ -33,8 +36,13 @@ const Dashboard = () => {
 
   const loadDashboard = useCallback(async () => {
     setLoading(true);
+
     try {
-      const [dashboardResponse, productivityResponse, calendarResponse] = await Promise.all([
+      const [
+        dashboardResponse,
+        productivityResponse,
+        calendarResponse,
+      ] = await Promise.all([
         taskApi.dashboard(),
         taskApi.productivity(),
         taskApi.calendar(),
@@ -49,6 +57,7 @@ const Dashboard = () => {
         categoryProgress: dashboardResponse.data.categoryProgress,
         weeklyProductivity: productivityResponse.data.weeklyProductivity,
       });
+
       setCalendarTasks(calendarResponse.data.tasks);
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -59,45 +68,68 @@ const Dashboard = () => {
 
   useEffect(() => {
     const timeout = setTimeout(loadDashboard, 0);
+
     window.addEventListener("taskflow:tasks-changed", loadDashboard);
+
     return () => {
       clearTimeout(timeout);
-      window.removeEventListener("taskflow:tasks-changed", loadDashboard);
+      window.removeEventListener(
+        "taskflow:tasks-changed",
+        loadDashboard
+      );
     };
   }, [loadDashboard]);
 
   if (loading) {
-    return <div className="bg-white rounded-3xl p-10 text-gray-500">Loading dashboard...</div>;
+    return (
+      <div className="bg-white rounded-3xl shadow-md border border-orange-100 p-12 flex flex-col items-center justify-center">
+        <div className="w-12 h-12 border-4 border-orange-200 border-t-orange-500 rounded-full animate-spin"></div>
+
+        <p className="mt-5 text-gray-500 font-medium">
+          Loading your dashboard...
+        </p>
+      </div>
+    );
   }
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className="space-y-8 pb-8"
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+      className="space-y-8 pb-10"
     >
       <WelcomeBanner />
+
       <StatsCards metrics={metrics} />
 
       <section className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-        <div className="xl:col-span-8">
-          <div className="bg-white rounded-3xl shadow-sm border border-orange-100 p-6 h-full">
+        <div className="xl:col-span-7">
+          <div className={cardStyle}>
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800">Weekly Productivity</h2>
-                <p className="text-gray-500 mt-1">Completed tasks this week.</p>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  Weekly Productivity
+                </h2>
+
+                <p className="text-gray-500 mt-1">
+                  Completed tasks this week
+                </p>
               </div>
-              <div className="px-4 py-2 rounded-full bg-orange-100 text-orange-600 font-semibold">
+
+              <span className="px-4 py-2 rounded-full bg-orange-100 text-orange-600 text-sm font-semibold">
                 This Week
-              </div>
+              </span>
             </div>
-            <ProductivityChart data={metrics.weeklyProductivity} />
+
+            <ProductivityChart
+              data={metrics.weeklyProductivity}
+            />
           </div>
         </div>
 
-        <div className="xl:col-span-4">
-          <div className="bg-white rounded-3xl shadow-sm border border-orange-100 p-6 h-full">
+        <div className="xl:col-span-5">
+          <div className={cardStyle}>
             <CalendarWidget tasks={calendarTasks} />
           </div>
         </div>
@@ -105,13 +137,13 @@ const Dashboard = () => {
 
       <section className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         <div className="xl:col-span-7">
-          <div className="bg-white rounded-3xl shadow-sm border border-orange-100 p-6 h-full">
+          <div className={cardStyle}>
             <TodayTasks tasks={metrics.todayTasks} />
           </div>
         </div>
 
         <div className="xl:col-span-5">
-          <div className="bg-white rounded-3xl shadow-sm border border-orange-100 p-6 h-full">
+          <div className={cardStyle}>
             <FocusTimer />
           </div>
         </div>
@@ -119,14 +151,18 @@ const Dashboard = () => {
 
       <section className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         <div className="xl:col-span-6">
-          <div className="bg-white rounded-3xl shadow-sm border border-orange-100 p-6 h-full">
-            <ActiveProjects categories={metrics.categoryProgress} />
+          <div className={cardStyle}>
+            <ActiveProjects
+              categories={metrics.categoryProgress}
+            />
           </div>
         </div>
 
         <div className="xl:col-span-6">
-          <div className="bg-white rounded-3xl shadow-sm border border-orange-100 p-6 h-full">
-            <RecentActivity tasks={metrics.recentActivity} />
+          <div className={cardStyle}>
+            <RecentActivity
+              tasks={metrics.recentActivity}
+            />
           </div>
         </div>
       </section>
