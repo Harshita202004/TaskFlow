@@ -1,23 +1,33 @@
-# TaskFlow
+# 🚀 TaskFlow – Smart Daily Task & Productivity Tracker
 
 TaskFlow is a full-stack MERN task and productivity application that helps users organize daily tasks, track productivity, and manage schedules through a modern, responsive interface.
 
-## Features
+## 🌐 Live Demo
 
-- JWT Authentication
-- Protected Routes
-- Task CRUD Operations
-- Dashboard with Statistics
-- Daily Goal Progress
-- Calendar View
-- Analytics Dashboard
-- Focus Timer (Pomodoro)
-- Notification Badge
-- Settings Page
-- Responsive UI
-- MongoDB Persistence
+👉 **[TaskFlow Live](https://taskflow-twlk.onrender.com)**
 
-## Tech Stack
+## 💻 GitHub Repository
+
+👉 **[TaskFlow Repository](https://github.com/Harshita202004/TaskFlow)**
+
+---
+
+## ✨ Features
+
+- 🔐 JWT Authentication
+- 🛡️ Protected Routes
+- ✅ Task CRUD Operations
+- 📊 Dashboard with Statistics
+- 🎯 Daily Goal Progress
+- 📅 Calendar View
+- 📈 Analytics Dashboard
+- ⏱️ Focus Timer (Pomodoro)
+- 🔔 Notification Badge
+- ⚙️ Settings Page
+- 📱 Responsive UI
+- ☁️ MongoDB Persistence
+
+## 🛠️ Tech Stack
 
 - React + Vite
 - Tailwind CSS
@@ -29,7 +39,7 @@ TaskFlow is a full-stack MERN task and productivity application that helps users
 - bcrypt
 - Cookie Parser
 
-## Setup
+## 📦 Setup
 
 Install dependencies:
 
@@ -78,7 +88,7 @@ Open:
 http://localhost:5173
 ```
 
-## Verification
+## ✅ Verification
 
 ```bash
 cd client
