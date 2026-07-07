@@ -99,7 +99,7 @@ const Dashboard = () => {
       transition={{ duration: 0.45 }}
       className="space-y-8 pb-10"
     >
-      <WelcomeBanner />
+      <WelcomeBanner metrics={metrics} />
 
       <StatsCards metrics={metrics} />
 
