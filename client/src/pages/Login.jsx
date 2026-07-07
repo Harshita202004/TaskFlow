@@ -46,7 +46,7 @@ function Login() {
   };
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-[#FFFDF9] flex items-center justify-center px-6 py-10">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#FFFDF9] px-4 py-6 sm:px-6 sm:py-10">
 
       {/* Background */}
 
@@ -63,13 +63,13 @@ function Login() {
       <motion.div
         animate={{ y: [0, -15, 0] }}
         transition={{ repeat: Infinity, duration: 5 }}
-        className="absolute top-40 left-40 w-3 h-3 rounded-full bg-orange-400"
+        className="absolute left-8 top-32 h-3 w-3 rounded-full bg-orange-400 sm:left-40 sm:top-40"
       />
 
       <motion.div
         animate={{ y: [0, 18, 0] }}
         transition={{ repeat: Infinity, duration: 6 }}
-        className="absolute right-40 top-60 w-4 h-4 rounded-full bg-orange-300"
+        className="absolute right-8 top-52 h-4 w-4 rounded-full bg-orange-300 sm:right-40 sm:top-60"
       />
 
       <motion.div
@@ -84,7 +84,7 @@ function Login() {
         transition={{
           duration: 0.8,
         }}
-        className="relative z-10 w-full max-w-md rounded-3xl bg-white/80 backdrop-blur-xl border border-orange-100 shadow-[0_20px_60px_rgba(249,115,22,.15)] p-8"
+        className="relative z-10 w-full max-w-md rounded-3xl border border-orange-100 bg-white/80 p-5 shadow-[0_20px_60px_rgba(249,115,22,.15)] backdrop-blur-xl sm:p-8"
       >
 
         <Link
@@ -108,7 +108,7 @@ function Login() {
 
         </div>
 
-        <h1 className="text-center text-4xl font-black mt-6 text-slate-900">
+        <h1 className="mt-6 text-center text-3xl font-black text-slate-900 sm:text-4xl">
           Welcome Back
         </h1>
 

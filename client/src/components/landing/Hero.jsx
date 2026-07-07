@@ -32,7 +32,7 @@ const floating = {
 
 const Hero = () => {
   return (
-    <section className="relative h-screen overflow-hidden bg-[#FFFDF9] flex items-center justify-center">
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#FFFDF9] py-10 sm:py-12">
 
       {/* Background */}
 
@@ -93,13 +93,13 @@ const Hero = () => {
       <motion.div
         animate={{ y: [0, -20, 0] }}
         transition={{ duration: 5, repeat: Infinity }}
-        className="absolute top-36 left-40 w-3 h-3 rounded-full bg-orange-400"
+        className="absolute left-10 top-28 h-3 w-3 rounded-full bg-orange-400 sm:left-40 sm:top-36"
       />
 
       <motion.div
         animate={{ y: [0, 18, 0] }}
         transition={{ duration: 6, repeat: Infinity }}
-        className="absolute top-52 right-40 w-3 h-3 rounded-full bg-orange-300"
+        className="absolute right-10 top-48 h-3 w-3 rounded-full bg-orange-300 sm:right-40 sm:top-52"
       />
 
       <motion.div
@@ -108,18 +108,17 @@ const Hero = () => {
         className="absolute bottom-32 left-1/4 w-4 h-4 rounded-full bg-orange-200"
       />
 
-      <div className="relative z-20 max-w-5xl mx-auto px-6 pt-20 pb-10 text-center">
+      <div className="relative z-20 mx-auto w-full max-w-5xl px-4 pb-8 pt-10 text-center sm:px-6 sm:pt-20">
 
         <motion.div
           variants={floating}
           animate="animate"
-          className="inline-flex mb-6"
+          className="mb-5 inline-flex sm:mb-6"
         >
-          <div className="w-24 h-24 rounded-[28px] bg-gradient-to-br from-orange-500 via-orange-400 to-yellow-400 flex items-center justify-center shadow-[0_20px_60px_rgba(249,115,22,.35)]">
+          <div className="flex h-20 w-20 items-center justify-center rounded-[24px] bg-gradient-to-br from-orange-500 via-orange-400 to-yellow-400 shadow-[0_20px_60px_rgba(249,115,22,.35)] sm:h-24 sm:w-24 sm:rounded-[28px]">
 
             <FiCheckSquare
-              size={46}
-              className="text-white"
+              className="text-4xl text-white sm:text-[46px]"
             />
 
           </div>
@@ -130,7 +129,7 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           custom={0.2}
-          className="text-5xl md:text-6xl font-black tracking-tight"
+          className="text-4xl font-black tracking-tight sm:text-5xl md:text-6xl"
         >
           <span className="text-slate-900">Task</span>
           <span className="text-orange-500">Flow</span>
@@ -141,7 +140,7 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           custom={0.4}
-          className="mt-4 text-lg md:text-xl text-slate-500"
+          className="mt-4 text-base text-slate-500 sm:text-lg md:text-xl"
         >
           Smart Daily Task & Productivity Tracker
         </motion.p>
@@ -151,7 +150,7 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           custom={0.6}
-          className="mt-8 text-5xl md:text-6xl font-black leading-tight"
+          className="mt-7 text-4xl font-black leading-tight sm:mt-8 sm:text-5xl md:text-6xl"
         >
           <span className="block text-slate-900">
             Organize your day,
@@ -179,7 +178,7 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           custom={0.8}
-          className="max-w-2xl mx-auto mt-6 text-lg md:text-xl text-slate-600 leading-9"
+          className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:mt-6 sm:text-lg sm:leading-8 md:text-xl md:leading-9"
         >
           Plan tasks, track progress, stay focused and organize every day
           with a clean productivity workspace built for students,
@@ -191,11 +190,11 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           custom={1}
-          className="mt-8 flex flex-wrap justify-center gap-5"
+          className="mt-8 flex flex-col justify-center gap-4 sm:flex-row sm:flex-wrap sm:gap-5"
         >
           <Link
             to="/register"
-            className="group px-10 py-4 rounded-2xl bg-gradient-to-r from-orange-600 to-yellow-400 text-white font-semibold text-lg shadow-xl flex items-center gap-3 hover:scale-105 transition duration-300"
+            className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-gradient-to-r from-orange-600 to-yellow-400 px-8 py-4 text-base font-semibold text-white shadow-xl transition duration-300 hover:scale-105 sm:w-auto sm:px-10 sm:text-lg"
           >
             Get Started
             <FiArrowRight className="group-hover:translate-x-1 transition" />
@@ -203,7 +202,7 @@ const Hero = () => {
 
           <Link
             to="/login"
-            className="px-10 py-4 rounded-2xl bg-white border border-orange-100 shadow-lg text-slate-800 font-semibold text-lg hover:border-orange-300 hover:shadow-xl transition duration-300"
+            className="w-full rounded-2xl border border-orange-100 bg-white px-8 py-4 text-center text-base font-semibold text-slate-800 shadow-lg transition duration-300 hover:border-orange-300 hover:shadow-xl sm:w-auto sm:px-10 sm:text-lg"
           >
             Sign In
           </Link>
@@ -213,7 +212,7 @@ const Hero = () => {
           initial="hidden"
           animate="visible"
           custom={1.2}
-         className="flex flex-wrap justify-center gap-4 mt-10 mb-16"
+         className="mb-10 mt-10 flex flex-wrap justify-center gap-3 sm:mb-16 sm:gap-4"
         >
           {[
             "Task Management",
@@ -223,7 +222,7 @@ const Hero = () => {
           ].map((item) => (
             <div
               key={item}
-              className="flex items-center gap-2 rounded-full bg-white/80 backdrop-blur-md border border-orange-100 px-5 py-3 shadow-md hover:shadow-lg transition"
+              className="flex items-center gap-2 rounded-full border border-orange-100 bg-white/80 px-4 py-3 shadow-md backdrop-blur-md transition hover:shadow-lg sm:px-5"
             >
               <FaCheckCircle className="text-orange-500" />
               <span className="text-sm md:text-base font-medium text-slate-700">

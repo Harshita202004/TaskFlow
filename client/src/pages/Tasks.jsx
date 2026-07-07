@@ -104,7 +104,7 @@ const Tasks = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="max-w-7xl mx-auto space-y-8"
+      className="mx-auto max-w-7xl space-y-6 sm:space-y-8"
     >
       <TaskForm
         open={openForm}
@@ -117,18 +117,18 @@ const Tasks = () => {
         saving={saving}
       />
 
-      <div className="flex justify-end">
+      <div className="flex justify-stretch sm:justify-end">
         <button
           onClick={() => setOpenForm(true)}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 justify-center"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3 text-white hover:bg-orange-600 sm:w-auto"
         >
           <FiPlus />
           Create Task
         </button>
       </div>
 
-      <div className="bg-white rounded-3xl border border-orange-100 shadow-sm p-6">
-        <div className="grid lg:grid-cols-3 gap-5">
+      <div className="rounded-3xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
           <div className="relative">
             <FiSearch className="absolute left-4 top-4 text-gray-400" />
             <input
@@ -145,7 +145,7 @@ const Tasks = () => {
           <select
             value={statusFilter}
             onChange={(event) => setStatusFilter(event.target.value)}
-            className="border border-orange-100 rounded-xl px-4 py-3"
+            className="w-full rounded-xl border border-orange-100 px-4 py-3"
           >
             <option>All Status</option>
             <option>To Do</option>
@@ -156,7 +156,7 @@ const Tasks = () => {
           <select
             value={priorityFilter}
             onChange={(event) => setPriorityFilter(event.target.value)}
-            className="border border-orange-100 rounded-xl px-4 py-3"
+            className="w-full rounded-xl border border-orange-100 px-4 py-3 sm:col-span-2 lg:col-span-1"
           >
             <option>All Priorities</option>
             <option>High</option>
@@ -167,16 +167,16 @@ const Tasks = () => {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-3xl border border-orange-100 shadow-sm p-10 text-center text-gray-500">
+        <div className="rounded-3xl border border-orange-100 bg-white p-8 text-center text-gray-500 shadow-sm sm:p-10">
           Loading tasks...
         </div>
       ) : tasks.length === 0 ? (
         <div className="bg-white rounded-3xl border border-orange-100 shadow-sm">
-          <div className="flex flex-col items-center justify-center text-center py-24 px-6">
-            <div className="w-24 h-24 rounded-full bg-orange-100 flex items-center justify-center">
+          <div className="flex flex-col items-center justify-center px-5 py-16 text-center sm:px-6 sm:py-24">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-orange-100 sm:h-24 sm:w-24">
               <FiCheckCircle size={45} className="text-orange-500" />
             </div>
-            <h2 className="text-3xl font-bold text-gray-800 mt-8">No Tasks Found</h2>
+            <h2 className="mt-8 text-2xl font-bold text-gray-800 sm:text-3xl">No Tasks Found</h2>
             <p className="text-gray-500 mt-3 max-w-md">
               Create a task or adjust your filters to see your work list.
             </p>
@@ -190,22 +190,22 @@ const Tasks = () => {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover={{ y: -2 }}
-              className="bg-white rounded-3xl border border-orange-100 shadow-sm hover:shadow-lg transition-all p-6"
+              className="min-w-0 rounded-3xl border border-orange-100 bg-white p-4 shadow-sm transition-all hover:shadow-lg sm:p-6"
             >
               <div className="flex flex-col lg:flex-row lg:justify-between gap-6">
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-3">
-                    <h2 className="text-xl font-bold text-gray-800">{task.title}</h2>
+                    <h2 className="break-words text-lg font-bold text-gray-800 sm:text-xl">{task.title}</h2>
                     <span className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-semibold">
                       {task.priority}
                     </span>
                   </div>
 
-                  <p className="mt-4 text-gray-500 leading-7">
+                  <p className="mt-4 break-words leading-7 text-gray-500">
                     {task.description || "No description provided."}
                   </p>
 
-                  <div className="flex flex-wrap gap-6 mt-6 text-sm text-gray-500">
+                  <div className="mt-6 flex flex-col gap-3 text-sm text-gray-500 sm:flex-row sm:flex-wrap sm:gap-6">
                     <div className="flex items-center gap-2">
                       <FiCalendar />
                       {formatDate(task.dueDate)}
@@ -221,10 +221,10 @@ const Tasks = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-3 h-fit">
+                <div className="flex h-fit flex-col gap-3 sm:flex-row sm:flex-wrap lg:justify-end">
                   <button
                     onClick={() => toggleComplete(task)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-5 py-3 rounded-xl flex items-center gap-2 transition"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-500 px-5 py-3 text-white transition hover:bg-green-600 sm:w-auto"
                   >
                     <FiCheckCircle />
                     {task.status === "Completed" ? "Reopen" : "Complete"}
@@ -234,14 +234,14 @@ const Tasks = () => {
                       setEditingTask(task);
                       setOpenForm(true);
                     }}
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 rounded-xl flex items-center gap-2 transition"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-blue-500 px-5 py-3 text-white transition hover:bg-blue-600 sm:w-auto"
                   >
                     <FiEdit2 />
                     Edit
                   </button>
                   <button
                     onClick={() => deleteTask(task)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-5 py-3 rounded-xl flex items-center gap-2 transition"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-500 px-5 py-3 text-white transition hover:bg-red-600 sm:w-auto"
                   >
                     <FiTrash2 />
                     Delete
@@ -254,21 +254,21 @@ const Tasks = () => {
       )}
 
       {pagination.pages > 1 && (
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
           <button
             onClick={() => loadTasks(pagination.page - 1)}
             disabled={pagination.page === 1}
-            className="px-4 py-2 rounded-xl bg-white border border-orange-100 disabled:opacity-50"
+            className="rounded-xl border border-orange-100 bg-white px-4 py-2 disabled:opacity-50"
           >
             Previous
           </button>
-          <span className="text-gray-600">
+          <span className="text-center text-gray-600">
             Page {pagination.page} of {pagination.pages}
           </span>
           <button
             onClick={() => loadTasks(pagination.page + 1)}
             disabled={pagination.page === pagination.pages}
-            className="px-4 py-2 rounded-xl bg-white border border-orange-100 disabled:opacity-50"
+            className="rounded-xl border border-orange-100 bg-white px-4 py-2 disabled:opacity-50"
           >
             Next
           </button>

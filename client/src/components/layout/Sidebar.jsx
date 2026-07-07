@@ -22,6 +22,7 @@ const menuItems = [
 const Sidebar = () => {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
+
   const initials = user?.name?.slice(0, 1).toUpperCase() || "U";
 
   const handleLogout = async () => {
@@ -31,8 +32,9 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="hidden lg:flex w-64 h-screen bg-orange-500 text-white flex-col shadow-xl sticky top-0">
-      <div className="h-20 flex items-center justify-center border-b border-orange-400">
+    <aside className="hidden lg:flex fixed left-0 top-0 z-40 w-64 h-screen bg-orange-500 text-white flex-col shadow-xl">
+      {/* Logo */}
+      <div className="h-20 flex items-center justify-center border-b border-orange-400 shrink-0">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -42,7 +44,8 @@ const Sidebar = () => {
         </motion.h1>
       </div>
 
-      <nav className="flex-1 px-4 py-6 space-y-2">
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-2">
         {menuItems.map((item) => (
           <NavLink key={item.name} to={item.path}>
             {({ isActive }) => (
@@ -50,7 +53,9 @@ const Sidebar = () => {
                 whileHover={{ x: 6 }}
                 whileTap={{ scale: 0.98 }}
                 className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${
-                  isActive ? "bg-orange-700 shadow-lg" : "hover:bg-orange-600 text-orange-50"
+                  isActive
+                    ? "bg-orange-700 shadow-lg"
+                    : "hover:bg-orange-600 text-orange-50"
                 }`}
               >
                 {item.icon}
@@ -61,14 +66,21 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="border-t border-orange-400 p-4">
+      {/* Profile + Logout */}
+      <div className="border-t border-orange-400 p-4 shrink-0">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-11 h-11 rounded-full bg-orange-700 flex items-center justify-center font-bold">
             {initials}
           </div>
+
           <div className="min-w-0">
-            <h3 className="font-semibold truncate">{user?.name || "User"}</h3>
-            <p className="text-sm text-orange-100 truncate">{user?.email}</p>
+            <h3 className="font-semibold truncate">
+              {user?.name || "User"}
+            </h3>
+
+            <p className="text-sm text-orange-100 truncate">
+              {user?.email}
+            </p>
           </div>
         </div>
 

@@ -59,9 +59,9 @@ const Analytics = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
+    <div className="mx-auto max-w-7xl space-y-6">
 
-      <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 xl:gap-5">
         {[
           ["Completion Rate", `${analytics.completionRate}%`, FiTrendingUp],
           ["Completed", analytics.completed, FiCheckCircle],
@@ -70,7 +70,7 @@ const Analytics = () => {
         ].map(([label, value, Icon]) => (
           <div
             key={label}
-            className="bg-white rounded-2xl border border-orange-100 shadow-sm p-6 hover:shadow-md transition"
+            className="rounded-2xl border border-orange-100 bg-white p-5 shadow-sm transition hover:shadow-md sm:p-6"
           >
             <Icon className="text-orange-500 text-2xl" />
 
@@ -78,22 +78,22 @@ const Analytics = () => {
               {label}
             </p>
 
-            <h2 className="text-3xl font-bold text-gray-800">
+            <h2 className="text-2xl font-bold text-gray-800 sm:text-3xl">
               {value}
             </h2>
           </div>
         ))}
       </div>
 
-      <div className="grid xl:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-12">
 
-        <div className="xl:col-span-8 bg-white rounded-3xl border border-orange-100 shadow-sm p-6">
+        <div className="min-w-0 rounded-3xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6 xl:col-span-8">
           <ProductivityChart
             data={analytics.weeklyProductivity}
           />
         </div>
 
-        <div className="xl:col-span-4 bg-white rounded-3xl border border-orange-100 shadow-sm p-6">
+        <div className="min-w-0 rounded-3xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6 xl:col-span-4">
           <h2 className="text-xl font-bold text-gray-800 mb-6">
             Priority Split
           </h2>

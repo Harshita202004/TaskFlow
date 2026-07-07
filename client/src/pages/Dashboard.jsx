@@ -27,7 +27,7 @@ const emptyMetrics = {
 };
 
 const cardStyle =
-  "bg-white/90 backdrop-blur-sm rounded-3xl border border-orange-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-6 h-full";
+  "bg-white/90 backdrop-blur-sm rounded-3xl border border-orange-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 p-4 sm:p-6 h-full min-w-0";
 
 const Dashboard = () => {
   const [metrics, setMetrics] = useState(emptyMetrics);
@@ -97,7 +97,7 @@ const Dashboard = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
-      className="space-y-8 pb-10"
+      className="space-y-6 pb-10 sm:space-y-8"
     >
       <WelcomeBanner metrics={metrics} />
 
@@ -106,9 +106,9 @@ const Dashboard = () => {
       <section className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         <div className="xl:col-span-7">
           <div className={cardStyle}>
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-2xl font-bold text-gray-800">
+            <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
                   Weekly Productivity
                 </h2>
 
@@ -117,7 +117,7 @@ const Dashboard = () => {
                 </p>
               </div>
 
-              <span className="px-4 py-2 rounded-full bg-orange-100 text-orange-600 text-sm font-semibold">
+              <span className="w-fit rounded-full bg-orange-100 px-4 py-2 text-sm font-semibold text-orange-600">
                 This Week
               </span>
             </div>
@@ -129,7 +129,7 @@ const Dashboard = () => {
         </div>
 
         <div className="xl:col-span-5">
-          <div className={cardStyle}>
+          <div id="focus-timer" className={cardStyle}>
             <CalendarWidget tasks={calendarTasks} />
           </div>
         </div>
@@ -137,7 +137,7 @@ const Dashboard = () => {
 
       <section className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         <div className="xl:col-span-7">
-          <div className={cardStyle}>
+          <div id="notifications" className={cardStyle}>
             <TodayTasks tasks={metrics.todayTasks} />
           </div>
         </div>

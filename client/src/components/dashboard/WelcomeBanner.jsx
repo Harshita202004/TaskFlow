@@ -22,7 +22,7 @@ const WelcomeBanner = ({ metrics }) => {
       initial={{ opacity: 0, y: -25 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-600 via-orange-400 to-amber-300 p-8 shadow-xl"
+      className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-orange-600 via-orange-400 to-amber-300 p-5 shadow-xl sm:p-8"
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-white/10" />
@@ -66,10 +66,10 @@ const WelcomeBanner = ({ metrics }) => {
         className="absolute inset-y-0 w-24 bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-12"
       />
 
-      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
+      <div className="relative z-10 flex flex-col items-stretch justify-between gap-6 lg:flex-row lg:items-center lg:gap-8">
         {/* Left */}
-        <div className="flex-1">
-          <div className="flex items-center gap-4 mb-4">
+        <div className="min-w-0 flex-1">
+          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center">
             <motion.div
               animate={{
                 y: [0, -5, 0],
@@ -79,9 +79,9 @@ const WelcomeBanner = ({ metrics }) => {
                 duration: 5,
                 repeat: Infinity,
               }}
-              className="flex h-14 w-14 items-center justify-center rounded-full bg-white/25 backdrop-blur-md shadow-lg"
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/25 shadow-lg backdrop-blur-md sm:h-14 sm:w-14"
             >
-              <FiSun className="text-3xl text-yellow-200" />
+              <FiSun className="text-2xl text-yellow-200 sm:text-3xl" />
             </motion.div>
 
             <div>
@@ -91,7 +91,7 @@ const WelcomeBanner = ({ metrics }) => {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
-                className="mt-1 text-5xl font-extrabold text-white drop-shadow-md"
+                className="mt-1 text-3xl font-extrabold text-white drop-shadow-md sm:text-4xl lg:text-5xl"
               >
                 Welcome Back 👋
               </motion.h1>
@@ -102,7 +102,7 @@ const WelcomeBanner = ({ metrics }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="max-w-2xl text-lg leading-relaxed text-orange-50"
+            className="max-w-2xl text-base leading-relaxed text-orange-50 sm:text-lg"
           >
             Stay focused, complete your tasks on time, and make today your most
             productive day.
@@ -119,7 +119,7 @@ const WelcomeBanner = ({ metrics }) => {
             type: "spring",
             stiffness: 250,
           }}
-          className="w-full max-w-sm rounded-3xl bg-white/90 p-6 shadow-2xl backdrop-blur-xl"
+          className="w-full rounded-3xl bg-white/90 p-5 shadow-2xl backdrop-blur-xl sm:max-w-sm sm:p-6"
         >
           <div className="mb-5 flex items-center gap-3">
             <motion.div

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { FiBell, FiUser } from "react-icons/fi";
+import { FiBell, FiMenu, FiUser } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
 import { taskApi } from "../../api/taskApi";
 import { useAuth } from "../../context/AuthContext";
@@ -29,7 +29,7 @@ const pageInfo = {
   },
 };
 
-const Navbar = () => {
+const Navbar = ({ onMenuClick }) => {
   const { user } = useAuth();
   const location = useLocation();
 
@@ -87,22 +87,33 @@ useEffect(() => {
       initial={{ y: -25, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.35 }}
-      className="bg-white border-b border-orange-100 px-5 lg:px-8 py-5 flex items-center justify-between"
+      className="flex items-center justify-between gap-3 border-b border-orange-100 bg-white px-4 py-4 sm:px-6 lg:px-8 lg:py-5"
     >
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800">
-          {current.title}
-        </h1>
+      <div className="flex min-w-0 items-center gap-3">
+        <button
+          type="button"
+          onClick={onMenuClick}
+          aria-label="Open navigation"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600 transition hover:bg-orange-200 lg:hidden"
+        >
+          <FiMenu size={22} />
+        </button>
 
-        <p className="text-gray-500 mt-1">
-          {location.pathname === "/dashboard"
-            ? `Welcome back, ${user?.name || "there"}. Manage your work efficiently.`
-            : current.subtitle}
-        </p>
+        <div className="min-w-0">
+          <h1 className="truncate text-2xl font-bold text-gray-800 sm:text-3xl lg:overflow-visible lg:whitespace-normal">
+            {current.title}
+          </h1>
+
+          <p className="mt-1 hidden text-sm text-gray-500 sm:block lg:text-base">
+            {location.pathname === "/dashboard"
+              ? `Welcome back, ${user?.name || "there"}. Manage your work efficiently.`
+              : current.subtitle}
+          </p>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <button className="relative p-3 rounded-xl bg-orange-100 hover:bg-orange-200 transition">
+      <div className="flex shrink-0 items-center gap-2 sm:gap-4">
+        <button className="relative rounded-xl bg-orange-100 p-3 transition hover:bg-orange-200">
           <FiBell size={20} />
 
           {badgeCount > 0 && (
@@ -113,7 +124,7 @@ useEffect(() => {
         </button>
 
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-full bg-orange-500 text-white flex items-center justify-center">
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-orange-500 text-white">
             <FiUser />
           </div>
 

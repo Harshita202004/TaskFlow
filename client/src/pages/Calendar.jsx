@@ -44,7 +44,7 @@ const Calendar = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="mx-auto max-w-7xl">
       <CalendarWidget
         tasks={tasks}
         onTaskClick={setEditingTask}

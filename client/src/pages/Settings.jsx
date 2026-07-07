@@ -65,19 +65,19 @@ const Settings = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
+    <div className="mx-auto max-w-5xl space-y-6 sm:space-y-8">
 
       {/* Profile */}
 
       <form
         onSubmit={saveProfile}
-        className="bg-white rounded-3xl border border-orange-100 shadow-sm p-6 space-y-6"
+        className="space-y-6 rounded-3xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6"
       >
         <h2 className="text-xl font-bold text-gray-800">
           Profile
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 
           <label>
             <span className="font-medium text-gray-700">
@@ -116,7 +116,7 @@ const Settings = () => {
 
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 
           {[
             ["upcomingTasks", "Upcoming task alerts"],
@@ -125,7 +125,7 @@ const Settings = () => {
           ].map(([key, label]) => (
             <label
               key={key}
-              className="flex items-center gap-3 rounded-xl border border-orange-100 p-4"
+              className="flex min-w-0 items-center gap-3 rounded-xl border border-orange-100 p-4"
             >
               <input
                 type="checkbox"
@@ -149,7 +149,7 @@ const Settings = () => {
         <button
           type="submit"
           disabled={saving}
-          className="rounded-xl bg-orange-500 px-6 py-3 text-white hover:bg-orange-600 disabled:bg-gray-400"
+          className="w-full rounded-xl bg-orange-500 px-6 py-3 text-white hover:bg-orange-600 disabled:bg-gray-400 sm:w-auto"
         >
           Save Settings
         </button>
@@ -160,13 +160,13 @@ const Settings = () => {
 
       <form
         onSubmit={changePassword}
-        className="bg-white rounded-3xl border border-orange-100 shadow-sm p-6 space-y-6"
+        className="space-y-6 rounded-3xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6"
       >
         <h2 className="text-xl font-bold text-gray-800">
           Change Password
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
 
           <input
             type="password"
@@ -178,7 +178,7 @@ const Settings = () => {
                 currentPassword: e.target.value,
               }))
             }
-            className="rounded-xl border border-orange-100 px-4 py-3 outline-none focus:ring-2 focus:ring-orange-400"
+            className="w-full rounded-xl border border-orange-100 px-4 py-3 outline-none focus:ring-2 focus:ring-orange-400"
           />
 
           <input
@@ -191,7 +191,7 @@ const Settings = () => {
                 newPassword: e.target.value,
               }))
             }
-            className="rounded-xl border border-orange-100 px-4 py-3 outline-none focus:ring-2 focus:ring-orange-400"
+            className="w-full rounded-xl border border-orange-100 px-4 py-3 outline-none focus:ring-2 focus:ring-orange-400"
           />
 
         </div>
@@ -203,7 +203,7 @@ const Settings = () => {
             !passwords.currentPassword ||
             !passwords.newPassword
           }
-          className="rounded-xl bg-orange-500 px-6 py-3 text-white hover:bg-orange-600 disabled:bg-gray-400"
+          className="w-full rounded-xl bg-orange-500 px-6 py-3 text-white hover:bg-orange-600 disabled:bg-gray-400 sm:w-auto"
         >
           Change Password
         </button>

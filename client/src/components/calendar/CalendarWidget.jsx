@@ -58,17 +58,17 @@ export default function CalendarWidget({ tasks = [] }) {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-3xl overflow-hidden bg-white border border-orange-100 shadow-xl"
+      className="min-w-0 overflow-hidden rounded-3xl border border-orange-100 bg-white shadow-xl"
     >
-      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-400 p-6 text-white">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center">
-              <FiCalendar size={28} />
+      <div className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-400 p-4 text-white sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/20 sm:h-14 sm:w-14">
+              <FiCalendar className="text-2xl sm:text-[28px]" />
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold">
+              <h2 className="text-2xl font-bold sm:text-3xl">
                 {view.toLocaleString("default", {
                   month: "long",
                 })}
@@ -78,12 +78,12 @@ export default function CalendarWidget({ tasks = [] }) {
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 self-end sm:self-auto">
             <button
               onClick={() =>
                 setView(new Date(year, month - 1, 1))
               }
-              className="w-11 h-11 rounded-xl bg-white/20 hover:bg-white/30 transition"
+              className="h-11 w-11 rounded-xl bg-white/20 transition hover:bg-white/30"
             >
               <FiChevronLeft className="mx-auto text-xl" />
             </button>
@@ -92,7 +92,7 @@ export default function CalendarWidget({ tasks = [] }) {
               onClick={() =>
                 setView(new Date(year, month + 1, 1))
               }
-              className="w-11 h-11 rounded-xl bg-white/20 hover:bg-white/30 transition"
+              className="h-11 w-11 rounded-xl bg-white/20 transition hover:bg-white/30"
             >
               <FiChevronRight className="mx-auto text-xl" />
             </button>
@@ -100,12 +100,12 @@ export default function CalendarWidget({ tasks = [] }) {
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="grid grid-cols-7 gap-3">
+      <div className="p-3 sm:p-6">
+        <div className="grid grid-cols-7 gap-1.5 sm:gap-3">
           {weekDays.map((day) => (
             <div
               key={day}
-              className="text-center font-semibold text-gray-500"
+              className="text-center text-xs font-semibold text-gray-500 sm:text-base"
             >
               {day}
             </div>
@@ -135,7 +135,7 @@ export default function CalendarWidget({ tasks = [] }) {
               <button
                 key={index}
                 onClick={() => setSelected(day)}
-                className={`aspect-square rounded-2xl border transition-all p-2
+                className={`aspect-square rounded-xl border p-1.5 transition-all sm:rounded-2xl sm:p-2
                 ${
                   isSelected
                     ? "bg-orange-500 text-white border-orange-500 shadow-lg"
@@ -145,22 +145,22 @@ export default function CalendarWidget({ tasks = [] }) {
                 }`}
               >
                 <div className="flex justify-between items-start">
-                  <span className="font-semibold">
+                  <span className="text-sm font-semibold sm:text-base">
                     {day}
                   </span>
 
                   {list.length > 0 && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-white/80 text-orange-600">
+                    <span className="rounded-full bg-white/80 px-1.5 py-0.5 text-[10px] text-orange-600 sm:px-2 sm:text-xs">
                       {list.length}
                     </span>
                   )}
                 </div>
 
-                <div className="mt-2 flex flex-wrap gap-1">
+                <div className="mt-1 flex flex-wrap gap-1 sm:mt-2">
                   {list.slice(0, 3).map((task) => (
                     <span
                       key={task._id}
-                      className={`w-2.5 h-2.5 rounded-full ${
+                      className={`h-2 w-2 rounded-full sm:h-2.5 sm:w-2.5 ${
                         priorityColor[task.priority] ||
                         "bg-orange-400"
                       }`}
@@ -172,7 +172,7 @@ export default function CalendarWidget({ tasks = [] }) {
           })}
         </div>
 
-        <div className="mt-6 border-t border-orange-100 pt-5 flex justify-center gap-8">
+        <div className="mt-5 flex flex-wrap justify-center gap-4 border-t border-orange-100 pt-5 sm:mt-6 sm:gap-8">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-red-500"></span>
             <span className="text-sm text-gray-600">

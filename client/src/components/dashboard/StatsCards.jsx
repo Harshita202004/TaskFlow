@@ -35,7 +35,7 @@ const StatsCards = ({ metrics }) => {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">
       {stats.map((item, index) => {
         const Icon = item.icon;
 
@@ -45,7 +45,7 @@ const StatsCards = ({ metrics }) => {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white rounded-2xl p-6 shadow-md border border-gray-100"
+            className="rounded-2xl border border-gray-100 bg-white p-5 shadow-md sm:p-6"
           >
             <div className="flex justify-between items-center">
               <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${item.bg}`}>
@@ -58,7 +58,7 @@ const StatsCards = ({ metrics }) => {
             </div>
 
             <h3 className="mt-5 text-gray-500 font-medium">{item.title}</h3>
-            <h2 className="text-4xl font-bold text-gray-800 mt-1">{item.value}</h2>
+            <h2 className="mt-1 text-3xl font-bold text-gray-800 sm:text-4xl">{item.value}</h2>
 
             <div className="mt-5 w-full h-2 rounded-full bg-gray-100 overflow-hidden">
               <motion.div

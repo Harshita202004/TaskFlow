@@ -37,16 +37,16 @@ const FocusTimer = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="bg-white rounded-3xl border border-orange-100 shadow-sm p-6"
+      className="rounded-3xl border border-orange-100 bg-white p-4 shadow-sm sm:p-6"
     >
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
 
-        <h2 className="text-2xl font-bold text-gray-800">
+        <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
           Focus Tracker
         </h2>
 
-        <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 sm:h-12 sm:w-12">
 
           <FiClock className="text-orange-500 text-xl" />
 
@@ -56,12 +56,13 @@ const FocusTimer = () => {
 
       <div className="flex justify-center mt-8">
 
-        <div className="relative w-56 h-56">
+        <div className="relative h-48 w-48 sm:h-56 sm:w-56">
 
           <svg
             className="absolute inset-0"
-            width="224"
-            height="224"
+            viewBox="0 0 224 224"
+            width="100%"
+            height="100%"
           >
 
             <circle
@@ -94,7 +95,7 @@ const FocusTimer = () => {
 
             <div className="text-center">
 
-              <h1 className="text-5xl font-bold text-gray-800">
+              <h1 className="text-4xl font-bold text-gray-800 sm:text-5xl">
 
                 {hrs}:{mins}:{secs}
 
@@ -144,7 +145,7 @@ const FocusTimer = () => {
           Today's Focus Time
         </h3>
 
-        <div className="mt-3 flex items-center justify-between">
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
 
           <span className="text-gray-500">
             Time Focused

@@ -6,7 +6,7 @@ const ActiveProjects = ({ categories }) => {
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="bg-white rounded-2xl shadow-md p-6"
+      className="rounded-2xl bg-white p-4 shadow-md sm:p-6"
     >
       <h2 className="text-xl font-bold text-gray-800 mb-6">Category Progress</h2>
 
@@ -18,11 +18,11 @@ const ActiveProjects = ({ categories }) => {
             <motion.div
               key={category.name}
               whileHover={{ y: -3 }}
-              className="border border-gray-100 rounded-xl p-5"
+              className="rounded-xl border border-gray-100 p-4 sm:p-5"
             >
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-orange-100 sm:h-12 sm:w-12">
                     <FiFolder className="text-orange-500 text-xl" />
                   </div>
                   <div>

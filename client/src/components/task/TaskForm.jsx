@@ -51,14 +51,14 @@ const TaskForm = ({ open, onClose, onSave, editingTask, saving = false }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-3 backdrop-blur-sm sm:p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white rounded-3xl shadow-xl w-full max-w-2xl overflow-hidden"
+        className="flex max-h-[92vh] w-full max-w-[95vw] flex-col overflow-hidden rounded-3xl bg-white shadow-xl sm:max-w-2xl"
       >
-        <div className="flex items-center justify-between p-6 border-b">
-          <h2 className="text-2xl font-bold text-gray-800">
+        <div className="flex shrink-0 items-center justify-between border-b p-4 sm:p-6">
+          <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">
             {editingTask ? "Edit Task" : "Create Task"}
           </h2>
 
@@ -70,7 +70,7 @@ const TaskForm = ({ open, onClose, onSave, editingTask, saving = false }) => {
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5 overflow-y-auto p-4 sm:p-6">
           <div>
             <label className="font-medium text-gray-700">Task Title</label>
             <input
@@ -155,18 +155,18 @@ const TaskForm = ({ open, onClose, onSave, editingTask, saving = false }) => {
             </div>
           </div>
 
-          <div className="flex justify-end gap-4 pt-4">
+          <div className="flex flex-col justify-end gap-3 pt-4 sm:flex-row sm:gap-4">
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 rounded-xl border border-gray-300 hover:bg-gray-100 transition"
+              className="rounded-xl border border-gray-300 px-6 py-3 transition hover:bg-gray-100"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-3 rounded-xl bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 text-white transition"
+              className="rounded-xl bg-orange-500 px-6 py-3 text-white transition hover:bg-orange-600 disabled:bg-gray-400"
             >
               {saving ? "Saving..." : editingTask ? "Save Changes" : "Create Task"}
             </button>
