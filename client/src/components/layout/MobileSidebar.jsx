@@ -2,10 +2,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FiBarChart2,
-  FiBell,
   FiCalendar,
   FiCheckSquare,
-  FiClock,
   FiHome,
   FiLogOut,
   FiSettings,
@@ -19,8 +17,6 @@ const menuItems = [
   { name: "Tasks", path: "/tasks", icon: <FiCheckSquare size={20} /> },
   { name: "Calendar", path: "/calendar", icon: <FiCalendar size={20} /> },
   { name: "Analytics", path: "/analytics", icon: <FiBarChart2 size={20} /> },
-  { name: "Focus Timer", path: "/dashboard#focus-timer", icon: <FiClock size={20} /> },
-  { name: "Notifications", path: "/dashboard#notifications", icon: <FiBell size={20} /> },
   { name: "Settings", path: "/settings", icon: <FiSettings size={20} /> },
 ];
 
@@ -55,9 +51,9 @@ const MobileSidebar = ({ open, onClose }) => {
             animate={{ x: 0 }}
             exit={{ x: "-100%" }}
             transition={{ type: "spring", stiffness: 280, damping: 30 }}
-            className="relative flex h-full w-[min(86vw,22rem)] flex-col bg-orange-500 text-white shadow-2xl"
+            className="relative flex h-full w-[min(86vw,22rem)] flex-col bg-gradient-to-b from-[#FF8A00] via-[#FF7A00] to-[#F76707] text-white shadow-2xl"
           >
-            <div className="flex h-20 items-center justify-between border-b border-orange-400 px-5">
+            <div className="flex h-20 items-center justify-between border-b border-white/10 px-5">
               <h1 className="text-3xl font-bold">TaskFlow</h1>
 
               <button
@@ -77,7 +73,7 @@ const MobileSidebar = ({ open, onClose }) => {
                     <motion.div
                       whileTap={{ scale: 0.98 }}
                       className={`flex items-center gap-4 rounded-xl px-4 py-3 transition-all ${
-                        isActive ? "bg-orange-700 shadow-lg" : "text-orange-50 hover:bg-orange-600"
+                        isActive ? "bg-white/15 backdrop-blur-md border border-white/10 shadow-lg" : "text-orange-50 hover:bg-white/10"
                       }`}
                     >
                       {item.icon}
@@ -88,7 +84,7 @@ const MobileSidebar = ({ open, onClose }) => {
               ))}
             </nav>
 
-            <div className="border-t border-orange-400 p-4">
+            <div className="border-t border-white/10 p-4">
               <div className="mb-4 flex items-center gap-3">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-orange-700 font-bold">
                   {initials}
@@ -101,7 +97,7 @@ const MobileSidebar = ({ open, onClose }) => {
 
               <button
                 onClick={handleLogout}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-white py-3 font-semibold text-orange-600 transition hover:bg-orange-100"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-white py-3 font-semibold text-orange-600 transition bg-white text-[#F76707] hover:bg-orange-50 shadow-lg"
               >
                 <FiLogOut />
                 Logout
