@@ -147,7 +147,7 @@ const Tasks = () => {
             onChange={(event) => setStatusFilter(event.target.value)}
             className="border border-orange-100 rounded-xl px-4 py-3"
           >
-            <option>All</option>
+            <option>All Status</option>
             <option>To Do</option>
             <option>In Progress</option>
             <option>Completed</option>
@@ -158,7 +158,7 @@ const Tasks = () => {
             onChange={(event) => setPriorityFilter(event.target.value)}
             className="border border-orange-100 rounded-xl px-4 py-3"
           >
-            <option>All</option>
+            <option>All Priorities</option>
             <option>High</option>
             <option>Medium</option>
             <option>Low</option>
