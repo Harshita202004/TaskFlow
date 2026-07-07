@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { FiBell, FiUser } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
@@ -35,22 +35,41 @@ const Navbar = () => {
 
   const [tasks, setTasks] = useState([]);
 
-  const loadNotifications = useCallback(async () => {
+
+useEffect(() => {
+  let isMounted = true;
+
+  const fetchNotifications = async () => {
     try {
       const allTasks = await taskApi.listAll();
-      setTasks(allTasks);
-    } catch {}
-  }, []);
 
-  useEffect(() => {
-    loadNotifications();
+      if (isMounted) {
+        setTasks(allTasks);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    window.addEventListener("taskflow:tasks-changed", loadNotifications);
+  fetchNotifications();
 
-    return () => {
-      window.removeEventListener("taskflow:tasks-changed", loadNotifications);
-    };
-  }, [loadNotifications]);
+  const handleTasksChanged = () => {
+    fetchNotifications();
+  };
+
+  window.addEventListener(
+    "taskflow:tasks-changed",
+    handleTasksChanged
+  );
+
+  return () => {
+    isMounted = false;
+    window.removeEventListener(
+      "taskflow:tasks-changed",
+      handleTasksChanged
+    );
+  };
+}, []);
 
   const metrics = useMemo(() => getDashboardMetrics(tasks), [tasks]);
 
