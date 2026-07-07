@@ -1,13 +1,16 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
 import { useAuth } from "../context/AuthContext";
-import Analytics from "../pages/Analytics";
-import Calendar from "../pages/Calendar";
-import Dashboard from "../pages/Dashboard";
+
+import Landing from "../pages/Landing";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import Settings from "../pages/Settings";
+
+import Dashboard from "../pages/Dashboard";
 import Tasks from "../pages/Tasks";
+import Calendar from "../pages/Calendar";
+import Analytics from "../pages/Analytics";
+import Settings from "../pages/Settings";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -20,27 +23,31 @@ const ProtectedRoute = () => {
     );
   }
 
-  return isAuthenticated ? <MainLayout /> : <Navigate to="/" replace />;
+  return isAuthenticated ? <MainLayout /> : <Navigate to="/login" replace />;
 };
 
 const PublicRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) return null;
+
   return isAuthenticated ? <Navigate to="/dashboard" replace /> : children;
 };
 
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
+
       <Route
-        path="/"
+        path="/login"
         element={
           <PublicRoute>
             <Login />
           </PublicRoute>
         }
       />
+
       <Route
         path="/register"
         element={
@@ -58,7 +65,7 @@ function AppRoutes() {
         <Route path="/settings" element={<Settings />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

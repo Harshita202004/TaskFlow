@@ -1,28 +1,42 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FiArrowLeft, FiEye, FiEyeOff, FiLogIn } from "react-icons/fi";
+import { MdEmail } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
 import { getErrorMessage } from "../api/http";
-import Button from "../components/common/Button";
-import Card from "../components/common/Card";
-import Input from "../components/common/Input";
 import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [form, setForm] = useState({ email: "", password: "" });
+
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (event) => {
-    setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+  const handleChange = (e) => {
+    setForm((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     setLoading(true);
+
     try {
       await login(form);
-      toast.success("Welcome back");
+
+      toast.success("Welcome back!");
+
       navigate("/dashboard");
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -32,56 +46,242 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
-      <Card className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">TaskFlow</h1>
-          <p className="text-gray-500 mt-2">
-            Smart Daily Task & Productivity Tracker
-          </p>
-        </div>
+    <section className="relative min-h-screen overflow-hidden bg-[#FFFDF9] flex items-center justify-center px-6 py-10">
 
-        <h2 className="text-2xl font-semibold mb-6">Welcome Back</h2>
+      {/* Background */}
 
-        <form onSubmit={handleSubmit}>
-          <Input
-            label="Email"
-            name="email"
-            type="email"
-            placeholder="Enter your email"
-            value={form.email}
-            onChange={handleChange}
-          />
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="Enter your password"
-            value={form.password}
-            onChange={handleChange}
-          />
+      <div className="absolute inset-0">
 
-          <div className="flex justify-between items-center mb-6">
-            <label className="flex items-center gap-2 text-sm text-gray-600">
-              <input type="checkbox" />
-              Remember Me
-            </label>
-            <span className="text-blue-600 text-sm">Secure cookie session</span>
+        <div className="absolute -left-40 top-10 h-[420px] w-[420px] rounded-full bg-orange-200/40 blur-[150px]" />
+
+        <div className="absolute right-0 bottom-0 h-[420px] w-[420px] rounded-full bg-orange-100 blur-[150px]" />
+
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[260px] w-[260px] rounded-full bg-orange-50 blur-[120px]" />
+
+      </div>
+
+      <motion.div
+        animate={{ y: [0, -15, 0] }}
+        transition={{ repeat: Infinity, duration: 5 }}
+        className="absolute top-40 left-40 w-3 h-3 rounded-full bg-orange-400"
+      />
+
+      <motion.div
+        animate={{ y: [0, 18, 0] }}
+        transition={{ repeat: Infinity, duration: 6 }}
+        className="absolute right-40 top-60 w-4 h-4 rounded-full bg-orange-300"
+      />
+
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 40,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+        }}
+        transition={{
+          duration: 0.8,
+        }}
+        className="relative z-10 w-full max-w-md rounded-3xl bg-white/80 backdrop-blur-xl border border-orange-100 shadow-[0_20px_60px_rgba(249,115,22,.15)] p-8"
+      >
+
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-orange-600 hover:text-orange-700 font-medium mb-8"
+        >
+          <FiArrowLeft />
+          Back to Home
+        </Link>
+
+        <div className="flex justify-center">
+
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-orange-500 via-orange-400 to-yellow-400 flex items-center justify-center shadow-lg">
+
+            <FiLogIn
+              className="text-white"
+              size={36}
+            />
+
           </div>
 
-          <Button type="submit" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
-          </Button>
+        </div>
+
+        <h1 className="text-center text-4xl font-black mt-6 text-slate-900">
+          Welcome Back
+        </h1>
+
+        <p className="text-center text-slate-500 mt-3 mb-8">
+          Sign in to continue using TaskFlow
+        </p>
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
+
+          <div>
+
+            <label className="block mb-2 font-medium text-slate-700">
+              Email
+            </label>
+
+            <div className="relative">
+
+              <MdEmail className="absolute left-4 top-4 text-orange-400 text-xl" />
+
+              <input
+                type="email"
+                name="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="example@email.com"
+                required
+                className="w-full rounded-2xl border border-orange-100 bg-orange-50/40 py-4 pl-12 pr-4 outline-none focus:border-orange-400 transition"
+              />
+
+            </div>
+
+          </div>
+
+          <div>
+
+            <label className="block mb-2 font-medium text-slate-700">
+              Password
+            </label>
+
+            <div className="relative">
+
+              <RiLockPasswordLine className="absolute left-4 top-4 text-orange-400 text-xl" />
+
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                required
+                className="w-full rounded-2xl border border-orange-100 bg-orange-50/40 py-4 pl-12 pr-12 outline-none focus:border-orange-400 transition"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-4 text-slate-500"
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
+
+            </div>
+
+          </div>
+                    <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-2xl bg-gradient-to-r from-orange-600 to-yellow-400 py-4 text-lg font-semibold text-white shadow-[0_15px_40px_rgba(249,115,22,.30)] transition disabled:cursor-not-allowed disabled:opacity-70"
+          >
+            {loading ? "Signing In..." : "Sign In"}
+          </motion.button>
+
         </form>
 
-        <p className="text-center mt-6 text-gray-600">
-          Don't have an account?
-          <Link className="text-blue-600 cursor-pointer ml-2" to="/register">
-            Sign Up
+        <div className="mt-8 text-center">
+
+          <p className="text-slate-600">
+            Don't have an account?
+          </p>
+
+          <Link
+            to="/register"
+            className="mt-2 inline-block font-semibold text-orange-600 hover:text-orange-700 transition"
+          >
+            Create Account
           </Link>
-        </p>
-      </Card>
-    </div>
+
+        </div>
+
+      </motion.div>
+
+      {/* Decorative Elements */}
+
+      <motion.div
+        animate={{
+          scale: [1, 1.15, 1],
+          opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 6,
+        }}
+        className="absolute left-10 bottom-20 h-24 w-24 rounded-full bg-orange-200/30 blur-xl"
+      />
+
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.25, 0.55, 0.25],
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 7,
+        }}
+        className="absolute right-10 top-24 h-28 w-28 rounded-full bg-orange-300/20 blur-xl"
+      />
+
+      <motion.div
+        animate={{
+          rotate: [0, 360],
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 20,
+          ease: "linear",
+        }}
+        className="absolute top-28 left-20 h-6 w-6 rounded-full border-2 border-dashed border-orange-300"
+      />
+
+      <motion.div
+        animate={{
+          rotate: [360, 0],
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 24,
+          ease: "linear",
+        }}
+        className="absolute bottom-16 right-20 h-8 w-8 rounded-full border-2 border-dashed border-orange-200"
+      />
+
+      <motion.div
+        animate={{
+          y: [0, -10, 0],
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 5,
+        }}
+        className="absolute left-12 top-1/2 text-orange-400 text-xl"
+      >
+        ✦
+      </motion.div>
+
+      <motion.div
+        animate={{
+          y: [0, 10, 0],
+        }}
+        transition={{
+          repeat: Infinity,
+          duration: 6,
+        }}
+        className="absolute right-12 bottom-32 text-orange-300 text-2xl"
+      >
+        ✦
+      </motion.div>
+
+    </section>
   );
 }
 
