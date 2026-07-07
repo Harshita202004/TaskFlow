@@ -29,13 +29,16 @@ TaskFlow is a full-stack MERN task and productivity application that helps users
 
 ## 🛠️ Tech Stack
 
+### Frontend
 - React + Vite
 - Tailwind CSS
 - Framer Motion
+- Axios
+
+### Backend
 - Express.js
 - MongoDB Atlas + Mongoose
 - JWT Authentication
-- Axios
 - bcrypt
 - Cookie Parser
 
