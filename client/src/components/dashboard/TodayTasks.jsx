@@ -13,7 +13,7 @@ const TodayTasks = ({ tasks }) => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold text-gray-800 sm:text-2xl">Today's Tasks</h2>
-          <p className="text-gray-500 mt-1">Tasks due today from MongoDB.</p>
+          <p className="text-gray-500 mt-1">Daily Task Overview</p>
         </div>
 
         <Link
